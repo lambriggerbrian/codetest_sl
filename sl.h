@@ -68,7 +68,7 @@
 
 #define LOGOHEIGHT    	 6
 #define LOGOFUNNEL  	 4
-#define LOGOLENGTH      84
+#define LOGOLENGTH      66 
 #define LOGOPATTERNS	 6
 
 #define LOGO1  "     ++      +------ "
@@ -94,12 +94,16 @@
 #define LWHL61 " _|--/~\\------/~\\-+  "
 #define LWHL62 "//// O========O_/    "
 
+#define LCOALLENGTH 21
+
 #define LCOAL1 "____                 "
 #define LCOAL2 "|   \\@@@@@@@@@@@     "
 #define LCOAL3 "|    \\@@@@@@@@@@@@@_ "
 #define LCOAL4 "|                  | "
 #define LCOAL5 "|__________________| "
 #define LCOAL6 "   (O)       (O)     "
+
+#define LCARLENGTH 21 
 
 #define LCAR1  "____________________ "
 #define LCAR2  "|  ___ ___ ___ ___ | "

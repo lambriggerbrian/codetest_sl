@@ -139,25 +139,35 @@ int add_sl(int x)
     static char *car[LOGOHEIGHT + 1]
         = {LCAR1, LCAR2, LCAR3, LCAR4, LCAR5, LCAR6, DELLN};
 
-    int i, y, py1 = 0, py2 = 0, py3 = 0;
-
-    if (x < - LOGOLENGTH)  return ERR;
+    int i, j, y, dy = 0;
+    int totallength = LOGOLENGTH + (CARS*LCARLENGTH);
+    if (x < - totallength)  return ERR;
     y = LINES / 2 - 3;
 
     if (FLY == 1) {
         y = (x / 6) + LINES - (COLS / 6) - LOGOHEIGHT;
-        py1 = 2;  py2 = 4;  py3 = 6;
+        dy = 2; 
     }
     for (i = 0; i <= LOGOHEIGHT; ++i) {
-        my_mvaddstr(y + i, x, sl[(LOGOLENGTH + x) / 3 % LOGOPATTERNS][i]);
-        my_mvaddstr(y + i + py1, x + 21, coal[i]);
-        my_mvaddstr(y + i + py2, x + 42, car[i]);
-        my_mvaddstr(y + i + py3, x + 63, car[i]);
-    }
-    if (ACCIDENT == 1) {
-        add_man(y + 1, x + 14);
-        add_man(y + 1 + py2, x + 45);  add_man(y + 1 + py2, x + 53);
-        add_man(y + 1 + py3, x + 66);  add_man(y + 1 + py3, x + 74);
+        int pattern = (LOGOLENGTH + x) / 3 % LOGOPATTERNS;
+        if (pattern >= 0) {
+            my_mvaddstr(y + i, x, sl[pattern][i]);
+            if (ACCIDENT == 1) add_man(y + 1, x + 14); 
+        } 
+        my_mvaddstr(y + i + dy, x + 21, coal[i]);
+        int x_offset = x + 42;
+        int y_offset = y + i + (2*dy); 
+        for (j = 0; j < CARS; ++j) {
+            my_mvaddstr(y_offset + (j*dy), x_offset + (j*LCARLENGTH), car[i]);
+        }
+        if (ACCIDENT == 1) {
+            int x_offset = x + 45;
+            int y_offset = y + 1 + (2*dy); 
+            for (j = 0; j < CARS; ++j) {
+                add_man(y_offset + (j*dy), x_offset + (j*LCARLENGTH));  
+                add_man(y_offset + (j*dy), x_offset + 11 + (j*LCARLENGTH));
+            } 
+        } 
     }
     add_smoke(y - 1, x + LOGOFUNNEL);
     return OK;
