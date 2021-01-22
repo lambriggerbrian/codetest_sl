@@ -184,7 +184,7 @@ int add_D51(int x)
            COAL06, COAL07, COAL08, COAL09, COAL10, COALDEL};
 
     int y, i, j, dy = 0;
-    int totallength = D51LENGTH + (CARS*COALLENGTH);
+    int totallength = D51LENGTH + (CARS-1)*COALLENGTH;
     if (x < - totallength)  return ERR;
     y = LINES / 2 - 5;
 
@@ -196,7 +196,7 @@ int add_D51(int x)
         int pattern = (D51LENGTH + x) % D51PATTERNS;
         // Make sure we use a valid pattern 
         if (pattern >= 0) {
-            my_mvaddstr(y + i, x, d51[(D51LENGTH + x) % D51PATTERNS][i]);
+            my_mvaddstr(y + i, x, d51[pattern][i]);
         }
         // Using locomotive offset, print the coal car CARS times 
         int offset = x + 52; 
@@ -231,9 +231,9 @@ int add_C51(int x)
         = {COALDEL, COAL01, COAL02, COAL03, COAL04, COAL05,
            COAL06, COAL07, COAL08, COAL09, COAL10, COALDEL};
 
-    int y, i, dy = 0;
-
-    if (x < - C51LENGTH)  return ERR;
+    int y, i, j, dy = 0;
+    int totallength = C51LENGTH + (CARS-1)*COALLENGTH; 
+    if (x < - totallength)  return ERR;
     y = LINES / 2 - 5;
 
     if (FLY == 1) {
@@ -241,8 +241,15 @@ int add_C51(int x)
         dy = 1;
     }
     for (i = 0; i <= C51HEIGHT; ++i) {
-        my_mvaddstr(y + i, x, c51[(C51LENGTH + x) % C51PATTERNS][i]);
-        my_mvaddstr(y + i + dy, x + 55, coal[i]);
+        int pattern = (C51LENGTH + x) % C51PATTERNS;
+        // Make sure we use a valid pattern 
+        if (pattern >= 0) {
+            my_mvaddstr(y + i, x, c51[pattern][i]);
+        } 
+        for (j = 0; j < CARS; ++j) {
+            int offset = x + 55; 
+            my_mvaddstr(y + i + (j*dy), offset + (j*COALLENGTH), coal[i]);
+        } 
     }
     if (ACCIDENT == 1) {
         add_man(y + 3, x + 45);
