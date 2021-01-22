@@ -11,11 +11,11 @@
 #	Last Modified: 2014/03/31
 #==========================================
 
-MAJOR_VERSION=0
-MINOR_VERSION=6
+MAJOR_VERSION=1
+MINOR_VERSION=0
 
 CC=g++
-CFLAGS=-O -Wall
+CFLAGS=-O -w
 
 PACKAGE_DIR=debpkgs/sl_$(MAJOR_VERSION).$(MINOR_VERSION)_x86
 DEB_DIR=$(PACKAGE_DIR)/DEBIAN
@@ -28,7 +28,7 @@ sl: sl.cpp sl.h
 	$(CC) $(CFLAGS) -o sl sl.cpp -lncurses
 
 debug: sl.cpp sl.h
-	$(CC) $(CFLAGS) -g -o sl_debug sl.cpp -lncurses
+	$(CC) $(CFLAGS) -Wall -g -o sl_debug sl.cpp -lncurses
 
 package: sl
 	mkdir --parents $(OPT_DIR)

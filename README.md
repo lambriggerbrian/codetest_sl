@@ -1,3 +1,32 @@
+A modified sl command made for the OpenDrives codetest
+
+Build Dependencies:
+- Ncurses
+
+Usage:
+
+sl [OPTION] ...
+
+Options:
+
+-a: There are people on the train!
+-F: The train flies away
+-c: Use a C51 train instead
+-l: Use a simpler train
+-n [N]: Add N cars to the end of the train (will not count coal cars for some trains)
+
+Makefile usage:
+
+all: build the command (with -w to avoid C++ complaining about using the original header ASCII art)
+sl: the build target
+debug: build with debugging symbols
+package: creates a .deb package in ./debpkgs folder, along with the staging folder. Version is copied from Makefile vars
+clean: removes binaries and the debpkgs folder
+distclean: removes binaries and the debpkgs folder
+
+
+Original README Below
+
 SL(1): Cure your bad habit of mistyping
 =======================================
 
