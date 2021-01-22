@@ -45,6 +45,9 @@
 #include <curses.h>
 #include <signal.h>
 #include <unistd.h>
+#include <cassert>
+#include <iostream>
+#include <string>
 #include "sl.h"
 
 void add_smoke(int y, int x);
@@ -53,7 +56,11 @@ int add_C51(int x);
 int add_D51(int x);
 int add_sl(int x);
 void option(char *str);
+void handleopts(int argc, char* argv[]);
 int my_mvaddstr(int y, int x, char *str);
+
+
+#define VALIDOPTS ":aFlcn:"
 
 int ACCIDENT  = 0;
 int LOGO      = 0;
@@ -85,15 +92,37 @@ void option(char *str)
     }
 }
 
+void handleopts(int argc, char* argv[]) {
+    if (argc == 1) return; 
+    extern int ACCIDENT, LOGO, FLY, C51, CARS;
+    int opt;
+    char* ptr; 
+    while ((opt = getopt(argc, argv, VALIDOPTS)) != -1) {
+        switch (opt) {
+            case 'a': ACCIDENT = 1; break;
+            case 'F': FLY      = 1; break;
+            case 'l': LOGO     = 1; break;
+            case 'c': C51      = 1; break;
+            case 'n': 
+                assert(optarg != NULL); 
+                CARS = strtol(optarg, &ptr, 10); 
+                break; 
+            case ':': break; 
+            case '?': break; 
+            default:                break;
+        }
+    }
+}
+
 int main(int argc, char *argv[])
 {
     int x, i;
-
-    for (i = 1; i < argc; ++i) {
-        if (*argv[i] == '-') {
-            option(argv[i] + 1);
-        }
-    }
+    handleopts(argc, argv);
+    //for (i = 1; i < argc; ++i) {
+    //    if (*argv[i] == '-') {
+    //        option(argv[i] + 1);
+    //    }
+    //}
     initscr();
     signal(SIGINT, SIG_IGN);
     noecho();

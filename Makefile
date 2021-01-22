@@ -1,3 +1,8 @@
+# Makefile for modified sl version
+# Created for OpenDrives codetest
+# Brian Lambrigger <lambrigger.brian@gmail.com>
+# Original copyright below
+
 #==========================================
 #    Makefile: makefile for sl 5.1
 #	Copyright 1993, 1998, 2014
@@ -7,7 +12,7 @@
 #==========================================
 
 MAJOR_VERSION=0
-MINOR_VERSION=5
+MINOR_VERSION=6
 
 CC=g++
 CFLAGS=-O -Wall
@@ -19,11 +24,11 @@ BIN_DIR=$(PACKAGE_DIR)/usr/bin
 
 all: sl
 
-sl: sl.c sl.h
-	$(CC) $(CFLAGS) -o sl sl.c -lncurses
+sl: sl.cpp sl.h
+	$(CC) $(CFLAGS) -o sl sl.cpp -lncurses
 
-debug: sl.c sl.h
-	$(CC) $(CFLAGS) -g -o sl_debug sl.c -lncurses
+debug: sl.cpp sl.h
+	$(CC) $(CFLAGS) -g -o sl_debug sl.cpp -lncurses
 
 package: sl
 	mkdir --parents $(OPT_DIR)
@@ -32,6 +37,7 @@ package: sl
 	cp ./sl $(OPT_DIR)/
 	chmod 755 $(OPT_DIR)/sl 
 	ln -s /opt/sl/sl $(BIN_DIR)/sl	
+	# Command below passes version to script that wraps heredoc template	
 	./create_control.sh $(MAJOR_VERSION) $(MINOR_VERSION) > $(DEB_DIR)/control
 	dpkg-deb --build $(PACKAGE_DIR)
     
