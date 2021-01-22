@@ -59,7 +59,7 @@ int ACCIDENT  = 0;
 int LOGO      = 0;
 int FLY       = 0;
 int C51       = 0;
-int CARS      = 1; // TODO: HOOK UP TO OPT
+int CARS      = 2; // TODO: HOOK UP TO OPT
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -189,7 +189,7 @@ int add_D51(int x)
     y = LINES / 2 - 5;
 
     if (FLY == 1) {
-        y = (x / 7) + LINES - (COLS / 7) - D51HEIGHT;
+        y = (x / 7) + LINES - (COLS / 7) - (D51HEIGHT + CARS);
         dy = 1;
     }
     for (i = 0; i <= D51HEIGHT; ++i) {
@@ -201,7 +201,7 @@ int add_D51(int x)
         // Using locomotive offset, print the coal car CARS times 
         int offset = x + 52; 
         for (j = 0; j < CARS; ++j) {
-            my_mvaddstr(y + i + dy, offset + (j*COALLENGTH), coal[i]);
+            my_mvaddstr(y + i + (j*dy), offset + (j*COALLENGTH), coal[i]);
         } 
     }
     if (ACCIDENT == 1) {
