@@ -30,10 +30,11 @@ package: sl
 	mkdir $(DEB_DIR)	
 	mkdir --parents $(BIN_DIR) 
 	cp ./sl $(OPT_DIR)/
-	chmod 755 $(OPT_DIR)/sl
-	ln -s $(OPT_DIR)/sl $(BIN_DIR)/sl	
+	chmod 755 $(OPT_DIR)/sl 
+	ln -s /opt/sl/sl $(BIN_DIR)/sl	
 	./create_control.sh $(MAJOR_VERSION) $(MINOR_VERSION) > $(DEB_DIR)/control
-
+	dpkg-deb --build $(PACKAGE_DIR)
+    
 clean:
 	rm -f sl
 	rm -f sl_debug

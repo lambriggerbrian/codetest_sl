@@ -59,7 +59,7 @@ int ACCIDENT  = 0;
 int LOGO      = 0;
 int FLY       = 0;
 int C51       = 0;
-int CARS      = 2; // TODO: HOOK UP TO OPT
+int CARS      = 1; // TODO: HOOK UP TO OPT
 
 int my_mvaddstr(int y, int x, char *str)
 {
