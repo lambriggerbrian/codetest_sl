@@ -1,3 +1,7 @@
+// sl.h used for OpenDrives code test
+// Brian Lambrigger <lambrigger.brian@gmail.com>
+// Original copyright below
+
 /*========================================
  *    sl.h: SL version 5.02
  *	Copyright 1993,2002,2014
@@ -47,18 +51,20 @@
 
 #define D51DEL   "                                                      "
 
-#define COAL01 "                              "
-#define COAL02 "                              "
-#define COAL03 "    _________________         "
-#define COAL04 "   _|                \\_____A  "
-#define COAL05 " =|                        |  "
-#define COAL06 " -|                        |  "
-#define COAL07 "__|________________________|_ "
-#define COAL08 "|__________________________|_ "
-#define COAL09 "   |_D__D__D_|  |_D__D__D_|   "
-#define COAL10 "    \\_/   \\_/    \\_/   \\_/    "
+#define COALLENGTH 29 
 
-#define COALDEL "                              "
+#define COAL01 "                               "
+#define COAL02 "                               "
+#define COAL03 "    _________________          "
+#define COAL04 "   _|                \\_____A  "
+#define COAL05 " =|                        |   "
+#define COAL06 " -|                        |   "
+#define COAL07 "__|________________________|_  "
+#define COAL08 "|__________________________|_  "
+#define COAL09 "   |_D__D__D_|  |_D__D__D_|    "
+#define COAL10 "    \\_/   \\_/    \\_/   \\_/ "
+
+#define COALDEL "                               "
 
 #define LOGOHEIGHT    	 6
 #define LOGOFUNNEL  	 4

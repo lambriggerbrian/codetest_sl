@@ -1,3 +1,7 @@
+// sl.cpp created for OpenDrives code test
+// Brian Lambrigger <lambrigger.brian@gmail.com>
+// Original copyright below
+
 /*========================================
  *    sl.c: SL version 5.03
  *        Copyright 1993,1998,2014-2015
@@ -55,6 +59,7 @@ int ACCIDENT  = 0;
 int LOGO      = 0;
 int FLY       = 0;
 int C51       = 0;
+int CARS      = 1; // TODO: HOOK UP TO OPT
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -178,9 +183,9 @@ int add_D51(int x)
         = {COAL01, COAL02, COAL03, COAL04, COAL05,
            COAL06, COAL07, COAL08, COAL09, COAL10, COALDEL};
 
-    int y, i, dy = 0;
-
-    if (x < - D51LENGTH)  return ERR;
+    int y, i, j, dy = 0;
+    int totallength = D51LENGTH + (CARS*COALLENGTH);
+    if (x < - totallength)  return ERR;
     y = LINES / 2 - 5;
 
     if (FLY == 1) {
@@ -188,8 +193,16 @@ int add_D51(int x)
         dy = 1;
     }
     for (i = 0; i <= D51HEIGHT; ++i) {
-        my_mvaddstr(y + i, x, d51[(D51LENGTH + x) % D51PATTERNS][i]);
-        my_mvaddstr(y + i + dy, x + 53, coal[i]);
+        int pattern = (D51LENGTH + x) % D51PATTERNS;
+        // Make sure we use a valid pattern 
+        if (pattern >= 0) {
+            my_mvaddstr(y + i, x, d51[(D51LENGTH + x) % D51PATTERNS][i]);
+        }
+        // Using locomotive offset, print the coal car CARS times 
+        int offset = x + 52; 
+        for (j = 0; j < CARS; ++j) {
+            my_mvaddstr(y + i + dy, offset + (j*COALLENGTH), coal[i]);
+        } 
     }
     if (ACCIDENT == 1) {
         add_man(y + 2, x + 43);
