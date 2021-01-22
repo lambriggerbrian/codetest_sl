@@ -1,0 +1,10 @@
+<< EOF
+Package: sl
+Version: $(MAJOR).$(MINOR) 
+Architecture: all
+Essential: no
+Priority: optional
+Section: misc
+Maintainer: Brian Lambrigger <lambrigger.brian@gmail.com>
+Description: Punish the typo-ists with petty ASCII
+EOF

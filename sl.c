@@ -209,9 +209,10 @@ int add_D51(int x)
             my_mvaddstr(y + i, x, d51[pattern][i]);
         }
         // Using locomotive offset, print the coal car CARS times 
-        int offset = x + 52; 
+        int x_offset = x + 52; 
+        int y_offset = y + i + dy; 
         for (j = 0; j < CARS; ++j) {
-            my_mvaddstr(y + i + (j*dy), offset + (j*COALLENGTH), coal[i]);
+            my_mvaddstr(y_offset + (j*dy), x_offset + (j*COALLENGTH), coal[i]);
         } 
     }
     if (ACCIDENT == 1) {
@@ -255,10 +256,12 @@ int add_C51(int x)
         // Make sure we use a valid pattern 
         if (pattern >= 0) {
             my_mvaddstr(y + i, x, c51[pattern][i]);
-        } 
+        }
+        // Print coal car CAR times 
         for (j = 0; j < CARS; ++j) {
-            int offset = x + 55; 
-            my_mvaddstr(y + i + (j*dy), offset + (j*COALLENGTH), coal[i]);
+            int x_offset = x + 55; 
+            int y_offset = y + i + dy; 
+            my_mvaddstr(y_offset + (j*dy), x_offset + (j*COALLENGTH), coal[i]);
         } 
     }
     if (ACCIDENT == 1) {
