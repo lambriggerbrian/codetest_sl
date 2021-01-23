@@ -13,7 +13,8 @@ Options:
 -F: The train flies away
 -c: Use a C51 train instead
 -l: Use a simpler train
--n [N]: Add N cars to the end of the train (will not count coal cars for some trains)
+-n [N]: Choose the Nth car (0-N, will wrap if N is bigger than options);
+-m [M]: Add M cars to the end of the train (will not count coal cars for some trains)
 
 Makefile usage:
 

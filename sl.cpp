@@ -52,6 +52,7 @@
 #include "sl.h"
 #include "vehicles.h"
 
+int add_uss(int x);
 int add_mx(int x);
 void add_smoke(int y, int x);
 void add_man(int y, int x);
@@ -64,20 +65,22 @@ void handleopts(int argc, char* argv[]);
 int my_mvaddstr(int y, int x, char *str);
 
 
-#define VALIDOPTS ":aFlcxn:m:"
+#define VALIDOPTS ":aFlcxun:m:"
 
 typedef int (*drawfunc)(int);
 
+int RANDOM        = 0;
 int ACCIDENT      = 0;
 int LOGO          = 0;
 int FLY           = 0;
 int C51           = 0;
 int CARS          = 1;
 int MX            = 0;
+int USS           = 0;
 drawfunc SELECTED = add_D51;
 
-#define NUMFUNCTIONS 4
-const drawfunc FUNCTIONS[] = { add_sl, add_D51, add_C51, add_mx }; 
+#define NUMFUNCTIONS 5
+const drawfunc FUNCTIONS[] = { add_sl, add_D51, add_C51, add_mx, add_uss }; 
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -96,7 +99,8 @@ void nselect(int n) {
 
 void chooserandom() {
     srand(time(0));
-    extern int CARS, FLY, ACCIDENT;
+    extern int RANDOM, CARS, FLY, ACCIDENT;
+    RANDOM = 1; 
     CARS = rand() % 5; 
     FLY = rand() % 2;
     ACCIDENT = rand() % 2; 
@@ -116,6 +120,7 @@ void handleopts(int argc, char* argv[]) {
             case 'l': LOGO     = 1; break;
             case 'c': C51      = 1; break;
             case 'x': MX       = 1; break; 
+            case 'u': USS      = 1; break;
             case 'n': 
                 assert(optarg != NULL); 
                 nselect(strtol(optarg, &ptr, 10)); 
@@ -143,7 +148,10 @@ int main(int argc, char *argv[])
     scrollok(stdscr, FALSE);
     
     for (x = COLS - 1; ; --x) {
-        if (LOGO == 1) {
+        if (RANDOM == 1) {
+            if (SELECTED(x) == ERR) break;
+        } 
+        else if (LOGO == 1) {
             if (add_sl(x) == ERR) break;
         }
         else if (C51 == 1) {
@@ -151,6 +159,9 @@ int main(int argc, char *argv[])
         }
         else if (MX == 1) {
             if (add_mx(x) == ERR) break;
+        } 
+        else if (USS == 1) {
+            if (add_uss(x) == ERR) break;
         } 
         else if (ACCIDENT == 1 || CARS != 1) {
             if (add_D51(x) == ERR) break;
@@ -393,3 +404,22 @@ int add_mx(int x)
     return OK;
 }
 
+int add_uss(int x)
+{
+    static std::string uss[USSHEIGHT + 1] 
+        = {USS01, USS02, USS03, USS04, USS05, USS06, USS07, USS08, USS09,
+           USS10, USS11, USS12, USS13, USSDEL};
+
+    int i, j, y, dy = 0;
+    int totallength = USSLENGTH;
+    if (x < - totallength)  return ERR;
+    y = LINES / 2 - 3;
+
+    if (FLY == 1) {
+        y = (x / 6) + LINES - (COLS / 6) - USSHEIGHT;
+    }
+    for (i = 0; i <= USSHEIGHT; ++i) {
+        my_mvaddstr(y + i, x, const_cast<char*>(uss[i].c_str()));
+    }
+    return OK;
+}
