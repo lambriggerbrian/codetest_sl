@@ -46,27 +46,38 @@
 #include <signal.h>
 #include <unistd.h>
 #include <cassert>
-#include <iostream>
+#include <stdlib.h>
+#include <time.h>
 #include <string>
 #include "sl.h"
+#include "vehicles.h"
 
+int add_mx(int x);
 void add_smoke(int y, int x);
 void add_man(int y, int x);
 int add_C51(int x);
 int add_D51(int x);
 int add_sl(int x);
-void option(char *str);
+void nselect(int n);
+void chooserandom();
 void handleopts(int argc, char* argv[]);
 int my_mvaddstr(int y, int x, char *str);
 
 
-#define VALIDOPTS ":aFlcn:"
+#define VALIDOPTS ":aFlcxn:m:"
 
-int ACCIDENT  = 0;
-int LOGO      = 0;
-int FLY       = 0;
-int C51       = 0;
-int CARS      = 1; // TODO: HOOK UP TO OPT
+typedef int (*drawfunc)(int);
+
+int ACCIDENT      = 0;
+int LOGO          = 0;
+int FLY           = 0;
+int C51           = 0;
+int CARS          = 1;
+int MX            = 0;
+drawfunc SELECTED = add_D51;
+
+#define NUMFUNCTIONS 4
+const drawfunc FUNCTIONS[] = { add_sl, add_D51, add_C51, add_mx }; 
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -77,24 +88,25 @@ int my_mvaddstr(int y, int x, char *str)
     return OK;
 }
 
-void option(char *str)
-{
-    extern int ACCIDENT, LOGO, FLY, C51;
+void nselect(int n) {
+    int selection = n % NUMFUNCTIONS; 
+    extern drawfunc SELECTED; 
+    SELECTED = FUNCTIONS[selection]; 
+}
 
-    while (*str != '\0') {
-        switch (*str++) {
-            case 'a': ACCIDENT = 1; break;
-            case 'F': FLY      = 1; break;
-            case 'l': LOGO     = 1; break;
-            case 'c': C51      = 1; break;
-            default:                break;
-        }
-    }
+void chooserandom() {
+    srand(time(0));
+    extern int CARS, FLY, ACCIDENT;
+    CARS = rand() % 5; 
+    FLY = rand() % 2;
+    ACCIDENT = rand() % 2; 
+    int selection = rand() % NUMFUNCTIONS; 
+    nselect(selection);
 }
 
 void handleopts(int argc, char* argv[]) {
-    if (argc == 1) return; 
-    extern int ACCIDENT, LOGO, FLY, C51, CARS;
+    if (argc == 1) chooserandom(); 
+    extern int ACCIDENT, LOGO, FLY, C51, CARS, MX;
     int opt;
     char* ptr; 
     while ((opt = getopt(argc, argv, VALIDOPTS)) != -1) {
@@ -103,10 +115,15 @@ void handleopts(int argc, char* argv[]) {
             case 'F': FLY      = 1; break;
             case 'l': LOGO     = 1; break;
             case 'c': C51      = 1; break;
+            case 'x': MX       = 1; break; 
             case 'n': 
                 assert(optarg != NULL); 
-                CARS = strtol(optarg, &ptr, 10); 
+                nselect(strtol(optarg, &ptr, 10)); 
                 break; 
+            case 'm': 
+                assert(optarg != NULL); 
+                CARS = strtol(optarg, &ptr, 10); 
+                break;
             case ':': break; 
             case '?': break; 
             default:                break;
@@ -118,19 +135,13 @@ int main(int argc, char *argv[])
 {
     int x, i;
     handleopts(argc, argv);
-    //for (i = 1; i < argc; ++i) {
-    //    if (*argv[i] == '-') {
-    //        option(argv[i] + 1);
-    //    }
-    //}
     initscr();
-    signal(SIGINT, SIG_IGN);
     noecho();
     curs_set(0);
     nodelay(stdscr, TRUE);
     leaveok(stdscr, TRUE);
     scrollok(stdscr, FALSE);
-
+    
     for (x = COLS - 1; ; --x) {
         if (LOGO == 1) {
             if (add_sl(x) == ERR) break;
@@ -138,8 +149,14 @@ int main(int argc, char *argv[])
         else if (C51 == 1) {
             if (add_C51(x) == ERR) break;
         }
-        else {
+        else if (MX == 1) {
+            if (add_mx(x) == ERR) break;
+        } 
+        else if (ACCIDENT == 1 || CARS != 1) {
             if (add_D51(x) == ERR) break;
+        }
+        else {
+            if (SELECTED(x) == ERR) break;
         }
         getch();
         refresh();
@@ -150,7 +167,6 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
 
 int add_sl(int x)
 {
@@ -355,3 +371,25 @@ void add_smoke(int y, int x)
         sum ++;
     }
 }
+
+int add_mx(int x)
+{
+    static std::string mx[MXHEIGHT + 1] 
+        = {MX01, MX02, MX03, MX04, MX05, MX06, MX07, MX08, MX09,
+           MX10, MX11, MX12, MX13, MX14, MX15, MX16, MX17, MX18,
+           MX19, MX20, MX21, MX22, MX23, MX24, MX25, MX26, MX27, MX28, MXDEL};
+
+    int i, j, y, dy = 0;
+    int totallength = MXLENGTH;
+    if (x < - totallength)  return ERR;
+    y = LINES / 2 - 3;
+
+    if (FLY == 1) {
+        y = (x / 6) + LINES - (COLS / 6) - MXHEIGHT;
+    }
+    for (i = 0; i <= MXHEIGHT; ++i) {
+        my_mvaddstr(y + i, x, const_cast<char*>(mx[i].c_str()));
+    }
+    return OK;
+}
+

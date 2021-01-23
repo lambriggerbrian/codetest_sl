@@ -12,7 +12,7 @@
 #==========================================
 
 MAJOR_VERSION=1
-MINOR_VERSION=0
+MINOR_VERSION=1
 
 CC=g++
 CFLAGS=-O -w
@@ -24,10 +24,10 @@ BIN_DIR=$(PACKAGE_DIR)/usr/bin
 
 all: sl
 
-sl: sl.cpp sl.h
+sl: sl.cpp sl.h vehicles.h
 	$(CC) $(CFLAGS) -o sl sl.cpp -lncurses
 
-debug: sl.cpp sl.h
+debug: sl.cpp sl.h vehicles.h
 	$(CC) $(CFLAGS) -Wall -g -o sl_debug sl.cpp -lncurses
 
 package: sl
