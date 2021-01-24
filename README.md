@@ -13,6 +13,8 @@ Options:
 -F: The train flies away
 -c: Use a C51 train instead
 -l: Use a simpler train
+-x: Use motorcyle
+-u: Use battleship
 -n [N]: Choose the Nth car (0-N, will wrap if N is bigger than options);
 -m [M]: Add M cars to the end of the train (will not count coal cars for some trains)
 
@@ -24,6 +26,11 @@ debug: build with debugging symbols
 package: creates a .deb package in ./debpkgs folder, along with the staging folder. Version is copied from Makefile vars
 clean: removes binaries and the debpkgs folder
 distclean: removes binaries and the debpkgs folder
+
+ASCII Art file format:
+First line must be
+{height} {length} {width}
+followed by ascii art frames with no separating lines.
 
 
 Original README Below

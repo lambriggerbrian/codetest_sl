@@ -12,7 +12,7 @@
 #==========================================
 
 MAJOR_VERSION=1
-MINOR_VERSION=1
+MINOR_VERSION=2
 
 CC=g++
 CFLAGS=-O -w
@@ -24,11 +24,11 @@ BIN_DIR=$(PACKAGE_DIR)/usr/bin
 
 all: sl
 
-sl: sl.cpp sl.h vehicles.h
-	$(CC) $(CFLAGS) -o sl sl.cpp -lncurses
+sl: sl.cpp sl.h ascii.cpp ascii.h vehicles.h
+	$(CC) $(CFLAGS) -o sl sl.cpp ascii.cpp -lncurses
 
-debug: sl.cpp sl.h vehicles.h
-	$(CC) $(CFLAGS) -Wall -g -o sl_debug sl.cpp -lncurses
+debug: sl.cpp sl.h ascii.cpp ascii.h vehicles.h
+	$(CC) -Wall $(CFLAGS) -g -o sl_debug sl.cpp ascii.cpp -lncurses
 
 package: sl
 	mkdir --parents $(OPT_DIR)

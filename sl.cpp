@@ -49,8 +49,13 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string>
+#include <vector>
 #include "sl.h"
+#include "ascii.h"
 #include "vehicles.h"
+
+using ascii::Ascii;
+using std::vector;
 
 int add_uss(int x);
 int add_mx(int x);
@@ -79,8 +84,11 @@ int MX            = 0;
 int USS           = 0;
 drawfunc SELECTED = add_D51;
 
-#define NUMFUNCTIONS 5
-const drawfunc FUNCTIONS[] = { add_sl, add_D51, add_C51, add_mx, add_uss }; 
+const vector<drawfunc> FUNCTIONS = { add_sl, add_D51, add_C51, add_mx, add_uss }; 
+
+const Ascii MOTOASCII = ascii::createascii("motorcyle.ascii");
+const Ascii USSASCII = ascii::createascii("BB61.ascii");
+
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -91,12 +99,14 @@ int my_mvaddstr(int y, int x, char *str)
     return OK;
 }
 
+// Select the Nth draw function by setting SELECTED
 void nselect(int n) {
-    int selection = n % NUMFUNCTIONS; 
+    int selection = n % FUNCTIONS.size(); //Ensure bounds
     extern drawfunc SELECTED; 
     SELECTED = FUNCTIONS[selection]; 
 }
 
+// Choose random flag values and draw function
 void chooserandom() {
     srand(time(0));
     extern int RANDOM, CARS, FLY, ACCIDENT;
@@ -104,7 +114,7 @@ void chooserandom() {
     CARS = rand() % 5; 
     FLY = rand() % 2;
     ACCIDENT = rand() % 2; 
-    int selection = rand() % NUMFUNCTIONS; 
+    int selection = rand() % FUNCTIONS.size(); 
     nselect(selection);
 }
 
@@ -146,7 +156,7 @@ int main(int argc, char *argv[])
     nodelay(stdscr, TRUE);
     leaveok(stdscr, TRUE);
     scrollok(stdscr, FALSE);
-    
+
     for (x = COLS - 1; ; --x) {
         if (RANDOM == 1) {
             if (SELECTED(x) == ERR) break;
@@ -383,43 +393,12 @@ void add_smoke(int y, int x)
     }
 }
 
-int add_mx(int x)
-{
-    static std::string mx[MXHEIGHT + 1] 
-        = {MX01, MX02, MX03, MX04, MX05, MX06, MX07, MX08, MX09,
-           MX10, MX11, MX12, MX13, MX14, MX15, MX16, MX17, MX18,
-           MX19, MX20, MX21, MX22, MX23, MX24, MX25, MX26, MX27, MX28, MXDEL};
-
-    int i, j, y, dy = 0;
-    int totallength = MXLENGTH;
-    if (x < - totallength)  return ERR;
-    y = LINES / 2 - 3;
-
-    if (FLY == 1) {
-        y = (x / 6) + LINES - (COLS / 6) - MXHEIGHT;
-    }
-    for (i = 0; i <= MXHEIGHT; ++i) {
-        my_mvaddstr(y + i, x, const_cast<char*>(mx[i].c_str()));
-    }
-    return OK;
+// Draw motorcyle
+int add_mx(int x) {
+    return ascii::draw(MOTOASCII, x, FLY);
 }
 
-int add_uss(int x)
-{
-    static std::string uss[USSHEIGHT + 1] 
-        = {USS01, USS02, USS03, USS04, USS05, USS06, USS07, USS08, USS09,
-           USS10, USS11, USS12, USS13, USSDEL};
-
-    int i, j, y, dy = 0;
-    int totallength = USSLENGTH;
-    if (x < - totallength)  return ERR;
-    y = LINES / 2 - 3;
-
-    if (FLY == 1) {
-        y = (x / 6) + LINES - (COLS / 6) - USSHEIGHT;
-    }
-    for (i = 0; i <= USSHEIGHT; ++i) {
-        my_mvaddstr(y + i, x, const_cast<char*>(uss[i].c_str()));
-    }
-    return OK;
+// Draw battleship
+int add_uss(int x) {
+    return ascii::draw(USSASCII, x, FLY);
 }
