@@ -1,7 +1,9 @@
-/sl
-/sl_debug
-/*.swp
-/debpkgs
+sl
+sl_debug
+*.swp
 *.gz
 codetest-sl*
 codetest_sl*
+debian/files
+debian/opt*
+debian/usr*

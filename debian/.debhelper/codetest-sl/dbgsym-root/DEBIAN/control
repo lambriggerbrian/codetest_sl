@@ -1,0 +1,13 @@
+Package: codetest-sl-dbgsym
+Package-Type: ddeb
+Source: codetest-sl
+Version: 1.3-1
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: Brian Lambrigger <lambrigger.brian@gmail.com>
+Installed-Size: 22
+Depends: codetest-sl (= 1.3-1)
+Section: debug
+Priority: optional
+Description: debug symbols for codetest-sl
+Build-Ids: e8b201acf2f8a0b644081f76865f9835a2c5fee1
