@@ -1,3 +1,9 @@
+codetest-sl (1.5) unstable; urgency=medium
+
+  * Fixed missing directory and committing of changelog 
+
+ -- Brian Lambrigger <lambrigger.brian@gmail.com>  Sun, 24 Jan 2021 19:26:53 -0800
+
 codetest-sl (1.3-1) unstable; urgency=medium
 
   * Initial release 

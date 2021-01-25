@@ -85,8 +85,8 @@ drawfunc SELECTED = add_D51;
 
 const vector<drawfunc> FUNCTIONS = { add_sl, add_D51, add_C51, add_mx, add_uss }; 
 
-const Ascii MOTOASCII = ascii::createascii("art/motorcyle.ascii");
-const Ascii USSASCII = ascii::createascii("art/BB61.ascii");
+const Ascii MOTOASCII = ascii::createascii("motorcyle.ascii");
+const Ascii USSASCII = ascii::createascii("BB61.ascii");
 
 
 int my_mvaddstr(int y, int x, char *str)

@@ -39,8 +39,11 @@ int ascii::draw(const Ascii& art, int x, bool FLY) {
 Ascii ascii::createascii(string filename) {
     ifstream file;
     int i = 0, j = 0, height, length, numframes;
-    file.open(filename, ios::in);
-    if (!file.is_open()) return Ascii();
+    file.open("./art/"+filename, ios::in);
+    if (!file.is_open()) {
+        file.open("/opt/sl/art/"+filename, ios::in); 
+        if (!file.is_open()) exit(1); 
+    }
     // Get metadata
     file >> height;
     file >> length;

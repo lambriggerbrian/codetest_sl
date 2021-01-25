@@ -12,7 +12,7 @@
 #==========================================
 
 MAJOR=1
-MINOR=4
+MINOR=5
 
 CC=g++
 CFLAGS=-O -w
@@ -42,7 +42,8 @@ package: clean
 	cd $(PACKAGEDIR) && dh_make --createorig -s -c gpl2	
 	cp -r ./debian $(PACKAGEDIR)/	
 	cd $(PACKAGEDIR) && dch -v $(MAJOR).$(MINOR) && debuild -b -us -uc
-
+	cp $(PACKAGEDIR)/debian/changelog ./debian/changelog
+	
 clean:
 	rm -f sl
 	rm -f sl_debug
