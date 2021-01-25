@@ -110,7 +110,7 @@ void chooserandom() {
     srand(time(0));
     extern int RANDOM, CARS, FLY, ACCIDENT;
     RANDOM = 1; 
-    CARS = rand() % 5; 
+    CARS = (rand() % 5) + 1; 
     FLY = rand() % 2;
     ACCIDENT = rand() % 2; 
     int selection = rand() % FUNCTIONS.size(); 

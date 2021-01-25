@@ -1,3 +1,9 @@
+codetest-sl (1.6) unstable; urgency=medium
+
+  * Created make target for new packages, fixed C51 flying 
+
+ -- Brian Lambrigger <lambrigger.brian@gmail.com>  Sun, 24 Jan 2021 19:50:06 -0800
+
 codetest-sl (1.5) unstable; urgency=medium
 
   * Fixed missing directory and committing of changelog 

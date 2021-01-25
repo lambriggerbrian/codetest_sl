@@ -12,7 +12,7 @@
 #==========================================
 
 MAJOR=1
-MINOR=5
+MINOR=6
 
 CC=g++
 CFLAGS=-O -w
@@ -36,11 +36,16 @@ install: sl
 	install -m 0755 sl /opt/sl/
 	ln -s /opt/sl/sl /usr/bin/sl
 
-package: clean
+prepackage: clean
 	mkdir $(PACKAGEDIR) $(ORIGDIR)
 	cp -t $(PACKAGEDIR) -r $(SOURCE)   
 	cd $(PACKAGEDIR) && dh_make --createorig -s -c gpl2	
 	cp -r ./debian $(PACKAGEDIR)/	
+
+package: prepackage
+	cd $(PACKAGEDIR) && debuild -b -us -uc
+
+newpackage: prepackage 
 	cd $(PACKAGEDIR) && dch -v $(MAJOR).$(MINOR) && debuild -b -us -uc
 	cp $(PACKAGEDIR)/debian/changelog ./debian/changelog
 	
