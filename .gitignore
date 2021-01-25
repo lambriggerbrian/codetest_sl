@@ -2,3 +2,6 @@
 /sl_debug
 /*.swp
 /debpkgs
+*.gz
+codetest-sl*
+codetest_sl*

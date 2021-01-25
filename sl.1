@@ -1,3 +1,6 @@
+.\" Modified from original sl command by Toyoda Masashi
+.\" Original copyright below
+
 .\"
 .\"  Copyright 1993,1998,2014 Toyoda Masashi (mtoyoda@acm.org)
 .\"
@@ -27,6 +30,11 @@ It flies like the galaxy express 999.
 .TP
 .B \-c
 C51 appears instead of D51.
+.TP
+.B \-n .I N
+Display the Nth vehicle (wraps on overflow)
+.B \-m .I M
+Adds M cars to the train (ignores coal car on \-l)
 .PP
 .SH SEE ALSO
 .BR ls (1)

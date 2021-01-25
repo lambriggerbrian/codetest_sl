@@ -2,7 +2,8 @@
 
 namespace ascii {
     // Ascii art data struct
-    struct Ascii {
+    class Ascii {
+    public:
         int height, length, numframes;
         std::vector<std::vector<std::string>> frames; 
     };
