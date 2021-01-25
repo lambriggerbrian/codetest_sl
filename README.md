@@ -39,7 +39,7 @@ sl: the build target
 
 debug: build with debugging symbols
 
-package: creates a .deb package in ./debpkgs folder, along with the staging folder. Version is copied from Makefile vars
+package: creates source folder then runs dh_make and debuild. Pulls version number, file list, etc. from Makefile
 
 clean: removes binaries and the debpkgs folder
 
